@@ -1,0 +1,48 @@
+##################################################
+### Install required packages
+- name: Install required packages
+  apt: name={{ item }} state=present
+  with_items:
+    - openjdk-8-jre-headless
+    - apt-transport-https
+
+##################################################
+### Install Jenkins
+- name: Add apt key for Debian
+  apt_key: url="https://pkg.jenkins.io/debian-stable/jenkins.io.key" state=present
+
+- name: Add repository for Debian
+  apt_repository: repo="deb https://pkg.jenkins.io/debian-stable binary/" state=present update_cache=yes
+
+- name: Install jenkins
+  apt: name={{ item }} state=latest
+  with_items:
+    - jenkins
+
+##################################################
+### Setup Nginx proxy
+- name: Copy new virtual hosts file.
+  template:
+    src=jenkins_proxy.conf
+    dest=/etc/nginx/sites-available/jenkins_proxy.conf
+
+- name: Enable new virtual hosts file.
+  file:
+    src=/etc/nginx/sites-available/jenkins_proxy.conf
+    dest=/etc/nginx/sites-enabled/jenkins_proxy.conf
+    state=link
+  notify:
+   - restart nginx
+
+##################################################
+### Setup password
+- name: Wait until the jenkins is ready
+  wait_for:
+    path: /var/lib/jenkins/secrets/initialAdminPassword
+
+- name: Check initialAdminPassword
+  shell: 'cat /var/lib/jenkins/secrets/initialAdminPassword'
+  register: test_result
+
+- name: Show initialAdminPassword
+  debug: msg="{{ test_result.stdout }}"
