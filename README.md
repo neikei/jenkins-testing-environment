@@ -39,9 +39,3 @@ default                    : ok=27   changed=18   unreachable=0    failed=0
 ## Feedback, Issues and Pull-Requests
 
 Feel free to report issues, fork this project and submit pull requests.
-
-## Changelog
-
-10 August 2017
-
-- Initial Commit
