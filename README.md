@@ -6,7 +6,9 @@ Jenkins testing environment in a Vagrantbox based on Debian and provisioned with
 
 - Virtualbox >= 5.2.4
 - Vagrant >= 2.0.1
-- Vagrant Plugin: [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
+- Vagrant Plugins:
+  - vagrant plugin install vagrant-hostmanager
+  - vagrant plugin install vagrant-vbguest
 
 ## Getting started
 
@@ -14,7 +16,7 @@ Jenkins testing environment in a Vagrantbox based on Debian and provisioned with
 2. cd jenkins-testing-environment
 3. vagrant up
 4. ... wait ...
-5. Open Jenkins in your web browser: http://192.168.56.150
+5. Open Jenkins in your web browser: http://jenkins.test
 
 ## Initial admin password
 

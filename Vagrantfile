@@ -17,6 +17,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider "parallels"
   config.vm.provider "virtualbox"
 
+  if !Vagrant.has_plugin?('vagrant-hostmanager')
+    puts "The vagrant-hostmanager plugin is required. Please install it with \"vagrant plugin install vagrant-hostmanager\""
+    exit
+  end
+
   if Vagrant.has_plugin?('vagrant-vbguest')
       config.vbguest.auto_update = true
   end
@@ -34,6 +39,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # Configure the VM
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = true
+  config.hostmanager.ignore_private_ip = false
+  config.hostmanager.include_offline = true
+  config.hostmanager.aliases = 'jenkins.test'
   config.vm.hostname = 'jenkins-testing-environment'
   config.vm.network :private_network, ip: "192.168.56.150"
 
